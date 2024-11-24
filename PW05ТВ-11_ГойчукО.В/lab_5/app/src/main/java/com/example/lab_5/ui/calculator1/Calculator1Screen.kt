@@ -34,6 +34,7 @@ fun Calculator1Screen(
     calculatorService: CalculatorService
 ) {
 
+    //вхідні дані
     val dataIndicators = mapOf(
         "ПЛ-110 кВ" to ReliabilityIndicators(0.007, 10.0, 0.167, 35.0),
         "ПЛ-35 кВ" to ReliabilityIndicators(0.02, 8.0, 0.167, 35.0),
@@ -53,6 +54,7 @@ fun Calculator1Screen(
         "ЕД 0,38 кВ" to ReliabilityIndicators(0.1, 50.0, 0.5, 0.0),
     )
 
+    //автозаповнення при запуску для спрощення уведення
     fun createDefaultAmountMap(): Map<String, MutableState<String>> {
         val defaultValues = mapOf(
             "ПЛ-110 кВ" to "10",
@@ -85,9 +87,10 @@ fun Calculator1Screen(
     var wDk by remember { mutableStateOf("") }
     var wDc by remember { mutableStateOf("") }
 
+    //функція заокруглення
     fun round(num: Double) = "%.5f".format(num)
 
-    fun calculateResults(){
+    fun calculateResults(){//функція розрахунку
         val result = calculatorService.calculateResult1(amountMap, dataIndicators)
 
         wOc = result[0].toString()
@@ -105,7 +108,7 @@ fun Calculator1Screen(
             .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 16.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    ) {//кожне поле для вводу даних
         amountMap.forEach { (key, state) ->
             TextField(
                 value = state.value,
@@ -117,12 +120,13 @@ fun Calculator1Screen(
             )
         }
 
-        Button(
+        Button(//кнопку розрахунку
             onClick = { calculateResults() }
         ) {
             Text("Розрахувати")
         }
-        if (wOc.isNotEmpty()) {
+        if (wOc.isNotEmpty() && tVOc.isNotEmpty() && kAOc.isNotEmpty() && kPOc.isNotEmpty()
+            && wDk.isNotEmpty() && wDc.isNotEmpty()) {
             Text(
                 """
                     Wос = ${round(wOc.toDouble())} (рік^(-1))
@@ -134,10 +138,10 @@ fun Calculator1Screen(
                     """.trimIndent().format()
             )
         }
-        Box(
+        Box(//поле виведення
             modifier = Modifier.padding(top = 100.dp)
         ) {
-            Button(
+            Button(//кнопка повернення
                 onClick = goBack
             ) {
                 Text("Назад")

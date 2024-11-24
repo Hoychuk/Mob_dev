@@ -24,21 +24,23 @@ import com.example.lab_5.services.CalculatorService
 fun Calculator2Screen(
     goBack: () -> Unit,
     calculatorService: CalculatorService
-) {
+) {//автозаповнення для спрощення уведення
     var zPerA by remember { mutableStateOf("23.6") }
     var zPerP by remember { mutableStateOf("17.6") }
     var omega by remember { mutableStateOf("0.01") }
     var tV by remember { mutableStateOf("0.045") }
     var Pm by remember { mutableStateOf("5120") }
-    var Tm by remember { mutableStateOf("6541") }
+    var Tm by remember { mutableStateOf("6451") }
     var kP by remember { mutableStateOf("0.004") }
 
     var mWnedA by remember { mutableStateOf("") }
     var mWnedP by remember { mutableStateOf("") }
     var mZper by remember { mutableStateOf("") }
 
+    //функція заокруглення
     fun round(num: Double) = "%.2f".format(num)
 
+    //виклик функції розранку
     fun calculateResult(){
         val formattedZPerA = zPerA.toDoubleOrNull() ?: 0
         val formattedZPerP = zPerP.toDoubleOrNull() ?: 0
@@ -66,7 +68,7 @@ fun Calculator2Screen(
             .padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 16.dp)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    ) {//текстові поля для уведення
         TextField(
             value = zPerA,
             onValueChange = { zPerA = it },
@@ -116,7 +118,7 @@ fun Calculator2Screen(
             maxLines = 1,
             modifier = Modifier.fillMaxWidth()
         )
-        Button(
+        Button(//кнопка розрахунку
             onClick = { calculateResult()}
         ) {
             Text("Розрахувати")
@@ -129,10 +131,10 @@ fun Calculator2Screen(
                         """.trimIndent().format(mWnedA, mWnedP, mZper)
             )
         }
-        Box(
+        Box(//вікно результатів
             modifier = Modifier.padding(top = 100.dp)
         ) {
-            Button(
+            Button(//кнопка повернення
                 onClick = goBack
             ) {
                 Text("Назад")
